@@ -1,0 +1,17 @@
+.minesweeper {
+  display: flex;
+  flex-flow: column;
+
+  button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  table {
+    td {
+      width: 25px;
+      height: 25px;
+      border: 1px solid rgb(175, 216, 248);
+    }
+  }
+}
