@@ -1,6 +1,5 @@
 import React from "react";
 import "./tile.scss";
-import ReactDOM from "react-dom";
 
 export interface TileProps {
   id: string;

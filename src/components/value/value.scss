@@ -1,15 +1,36 @@
 .value {
   user-select: none;
   animation: 1s ease-out 0s 1 fadeIn;
-  background-color: rgba(0, 190, 218, 0.75);
-  transition: background-color 4s;
+  background-color: rgba(255,255,255,1);
+  opacity: 1;
+  transition: opacity 2s;
+
+  &.one {
+    background-color: #95d69e;
+  }
+
+  &.two {
+    background-color: #2aae7e;
+  }
+
+  &.three {
+    background-color: #ffd02d;
+  }
+
+  &.four {
+    background-color: #db3d63;
+  }
+
+  &.five {
+    background-color: #c9003d;
+  }
 }
 
 @keyframes fadeIn {
   0% {
-    background-color: rgba(0,0,0,0);
+    opacity: 0;
   }
   100% {
-    background-color: rgba(0, 190, 218, 0.75)
+    opacity: 1;
   }
 }
