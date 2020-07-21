@@ -1,10 +1,18 @@
 import React from "react";
 import "./minesweeper.scss";
-import Board from "../../components/board/board";
+import Board from "../../components/game/board/board";
 import { BoardModel } from "../../models/board";
 import { BombTileModel } from "../../models/bombTile";
+import { RouteComponentProps } from "react-router-dom";
 
-export interface MinesweeperProps {}
+export interface MinesweeperLocationState {
+  bombs: number;
+  size: number;
+}
+
+export interface MinesweeperProps extends RouteComponentProps {
+
+}
 
 export interface MinesweeperState {
   board: BoardModel;
@@ -17,6 +25,9 @@ class Minesweeper extends React.Component<MinesweeperProps, MinesweeperState> {
   constructor(CommitsProps: MinesweeperProps) {
     super(CommitsProps);
 
+    // if (this.props.location.state) {
+    //   console.log(this.props.location.state as );
+    // }
     const board = new BoardModel(10, 10);
     board.generate();
 

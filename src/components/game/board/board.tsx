@@ -3,10 +3,10 @@ import Value from "../value/value";
 import Bomb from "../bomb/bomb";
 import Tile from "../tile/tile";
 import Flag from "../flag/flag";
-import { TileModel } from "../../models/tile";
-import { BombTileModel } from "../../models/bombTile";
-import { ValueTileModel } from "../../models/valueTile";
-import { BoardModel } from "../../models/board";
+import { TileModel } from "../../../models/tile";
+import { BombTileModel } from "../../../models/bombTile";
+import { ValueTileModel } from "../../../models/valueTile";
+import { BoardModel } from "../../../models/board";
 
 export interface BoardProps {
   board: BoardModel;

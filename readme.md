@@ -3,22 +3,27 @@
 </h1>
 
 <h4>
-  tbd
+  React minesweeper game
 </h4>
 
 ## Description
 
-tbd
+Simple version of minesweeper
 
 ## Contents
 
 - [Description](#description)
 - [Contents](#contents)
+- [Demo](#demo)
 - [Install](#install)
 - [Usage](#usage)
 - [Development](#development)
 - [Team](#team)
 - [License](#license)
+
+## Demo
+
+You can test the game [here](https://minesweeper.tpoe.dev)
 
 ## Install
 
