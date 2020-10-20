@@ -1,12 +1,12 @@
 import React from "react";
-import "./newgame.scss";
+import "./menu.scss";
 import { RouteComponentProps } from "react-router-dom";
 
 export interface NewgameProps extends RouteComponentProps {}
 
 export interface NewgameState {}
 
-class Newgame extends React.Component<NewgameProps, NewgameState> {
+class Menu extends React.Component<NewgameProps, NewgameState> {
   readonly state: NewgameState;
 
   constructor(CommitsProps: NewgameProps) {
@@ -20,10 +20,7 @@ class Newgame extends React.Component<NewgameProps, NewgameState> {
   componentDidMount() {}
 
   startHandler() {
-    this.props.history.push("/", {
-      bombs: 10,
-      size: 10
-    });
+    this.props.history.push(`/game?bombs=${10}?size=${10}`);
   }
 
   render() {
@@ -38,4 +35,4 @@ class Newgame extends React.Component<NewgameProps, NewgameState> {
   }
 }
 
-export default Newgame;
+export default Menu;

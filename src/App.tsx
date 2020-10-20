@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import './App.scss';
 
 import Minesweeper from './screens/minesweeper/minesweeper';
-import Newgame from './screens/newgame/newgame';
+import Menu from './screens/menu/menu';
 
 
 export default function BasicExample() {
@@ -12,8 +12,8 @@ export default function BasicExample() {
     <Router>
       <div className="App">
         <div className="content">
-          <Route exact path="/" component={Minesweeper} />
-          <Route path="/new" component={Newgame} />
+          <Route exact path="/" component={Menu} />
+          <Route path="/game" component={Minesweeper} />
         </div>
       </div>
     </Router>

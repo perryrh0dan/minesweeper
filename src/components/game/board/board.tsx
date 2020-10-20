@@ -10,6 +10,7 @@ import { BoardModel } from "../../../models/board";
 
 export interface BoardProps {
   board: BoardModel;
+  blocked: boolean;
   onClickHandler: any;
   onRightClickHandler: any;
 }
@@ -24,8 +25,6 @@ class Board extends React.Component<BoardProps, BoardState> {
 
     this.state = {};
   }
-
-  componentDidMount() {}
 
   render() {
     return (

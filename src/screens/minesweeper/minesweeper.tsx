@@ -1,33 +1,37 @@
 import React from "react";
+import { RouteComponentProps } from "react-router-dom";
+
 import "./minesweeper.scss";
+
 import Board from "../../components/game/board/board";
 import { BoardModel } from "../../models/board";
-import { BombTileModel } from "../../models/bombTile";
-import { RouteComponentProps } from "react-router-dom";
+import Stats from "../../components/stats/stats";
+import Gameover from "../../components/gameover/gameover";
 
 export interface MinesweeperLocationState {
   bombs: number;
   size: number;
 }
 
-export interface MinesweeperProps extends RouteComponentProps {
+export interface IMinesweeperProps extends RouteComponentProps {}
 
-}
-
-export interface MinesweeperState {
+export interface IMinesweeperState {
   board: BoardModel;
   state: "PROGRESS" | "WIN" | "LOST";
 }
 
-class Minesweeper extends React.Component<MinesweeperProps, MinesweeperState> {
-  readonly state: MinesweeperState;
+class Minesweeper extends React.Component<
+  IMinesweeperProps,
+  IMinesweeperState
+> {
+  readonly state: IMinesweeperState;
 
-  constructor(CommitsProps: MinesweeperProps) {
+  constructor(CommitsProps: IMinesweeperProps) {
     super(CommitsProps);
 
-    // if (this.props.location.state) {
-    //   console.log(this.props.location.state as );
-    // }
+    if (this.props.location.state) {
+      console.log(this.props.location.state);
+    }
     const board = new BoardModel(10, 10);
     board.generate();
 
@@ -62,22 +66,7 @@ class Minesweeper extends React.Component<MinesweeperProps, MinesweeperState> {
   }
 
   checkGameState() {
-    let counter = 0;
-    this.state.board.tiles.forEach((column) =>
-      column.forEach((tile) => {
-        if (tile.state === "OPEN") {
-          if (tile instanceof BombTileModel) {
-            this.setState({ state: "LOST" });
-          }
-        } else {
-          counter += 1;
-        }
-      })
-    );
-
-    if (counter === 10) {
-      this.setState({ state: "WIN" });
-    }
+    this.setState({ state: this.state.board.status });
   }
 
   restart() {
@@ -90,13 +79,15 @@ class Minesweeper extends React.Component<MinesweeperProps, MinesweeperState> {
   render() {
     return (
       <div className="minesweeper">
-        {this.state.state}
+        <Stats status={this.state.state} flags={this.state.board.flags}></Stats>
         <button onClick={this.restart}>Restart</button>
         <Board
           board={this.state.board}
+          blocked={this.state.board.status === "LOST"}
           onClickHandler={this.onClickHandler}
           onRightClickHandler={this.onRightClickHandler}
         ></Board>
+        <Gameover show={this.state.state === "LOST"}></Gameover>
       </div>
     );
   }

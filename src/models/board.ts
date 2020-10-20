@@ -13,6 +13,32 @@ export class BoardModel {
     this.tiles = Array<Array<TileModel>>();
   }
 
+  public get flags() {
+    return this.tiles.reduce((count, row) => count + row.reduce((count, row) => row.flagged ? count + 1 : count, 0), 0);
+  }
+
+  public get status() {
+    let counter = 0;
+    for (let row = 0; row < this.tiles.length; row++) {
+      for (let column = 0; column < this.tiles[row].length; column++) {
+        const tile = this.tiles[row][column]
+        if (tile.state === "OPEN") {
+          if (tile instanceof BombTileModel) {
+            return "LOST"
+          }
+        } else {
+          counter += 1;
+        }
+      }
+    }
+
+    if (counter === 10) {
+      return "WIN"
+    }
+
+    return "PROGRESS"
+  }
+
   public generate() {
     // generate board
     this.tiles = Array(this.size)
@@ -58,6 +84,7 @@ export class BoardModel {
         this.openNeightbours(x, y);
       }
     } else if (tile instanceof BombTileModel) {
+      this.openAll()
       console.log("Lost");
     }
   }
@@ -67,6 +94,14 @@ export class BoardModel {
 
     if (this.tiles[y][x].state === "CLOSE") {
       this.tiles[y][x].flagged = !this.tiles[y][x].flagged;
+    }
+  }
+
+  public openAll() {
+    for (let row = 0; row < this.tiles.length; row++) {
+      for (let column = 0; column < this.tiles[row].length; column++) {
+        this.open(column, row)
+      }
     }
   }
 
