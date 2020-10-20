@@ -1,15 +1,18 @@
 import React from "react";
+import { Status } from "../../models/board";
 
 export interface IStatsProps {
-  status: string;
+  status: Status;
   flags: number;
 }
 
 export default function Stats(props: IStatsProps) {
   return (
     <div className="stats">
-      <div>{props.status}</div>
-      <div>{props.flags}</div>
+      <span>
+        <label>Flags</label>
+        <div>{props.flags}</div>
+      </span>
     </div>
   );
 }

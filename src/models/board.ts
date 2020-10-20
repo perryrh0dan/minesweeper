@@ -2,41 +2,31 @@ import { TileModel } from "./tile";
 import { BombTileModel } from "./bombTile";
 import { ValueTileModel } from "./valueTile";
 
+export enum Status {
+  PROGRESS,
+  WIN,
+  LOST,
+  Stop,
+}
+
 export class BoardModel {
   public readonly size: number;
   public readonly bombs: number;
+  public status: Status;
   public tiles: Array<Array<TileModel>>;
+
+  // count up for every tile that get opened
+  public counter: number = 0;
 
   constructor(size: number, bombs: number) {
     this.size = size;
     this.bombs = bombs;
+    this.status = Status.Stop;
     this.tiles = Array<Array<TileModel>>();
   }
 
   public get flags() {
     return this.tiles.reduce((count, row) => count + row.reduce((count, row) => row.flagged ? count + 1 : count, 0), 0);
-  }
-
-  public get status() {
-    let counter = 0;
-    for (let row = 0; row < this.tiles.length; row++) {
-      for (let column = 0; column < this.tiles[row].length; column++) {
-        const tile = this.tiles[row][column]
-        if (tile.state === "OPEN") {
-          if (tile instanceof BombTileModel) {
-            return "LOST"
-          }
-        } else {
-          counter += 1;
-        }
-      }
-    }
-
-    if (counter === 10) {
-      return "WIN"
-    }
-
-    return "PROGRESS"
   }
 
   public generate() {
@@ -68,6 +58,8 @@ export class BoardModel {
         }
       }
     }
+
+    this.status = Status.PROGRESS;
   }
 
   public open(x: number, y: number) {
@@ -76,16 +68,23 @@ export class BoardModel {
 
     // open tile
     if (tile.state === "OPEN") return;
-    tile.open();
 
-    // Check is lost
+    tile.open();
+    this.counter += 1
+
+    // Check is game is lost
     if (tile instanceof ValueTileModel) {
       if (tile.value === 0) {
         this.openNeightbours(x, y);
       }
     } else if (tile instanceof BombTileModel) {
       this.openAll()
-      console.log("Lost");
+      this.status = Status.LOST
+    }
+
+    // Check if game is win
+    if (this.counter === this.size * this.size - this.bombs) {
+      this.status = Status.WIN;
     }
   }
 

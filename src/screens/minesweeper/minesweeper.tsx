@@ -1,10 +1,11 @@
-import React from "react";
-import { RouteComponentProps } from "react-router-dom";
+import React, { useEffect, useMemo, useState } from "react";
+import { RouteComponentProps, useHistory, useLocation } from "react-router-dom";
+import qs from 'query-string';
 
 import "./minesweeper.scss";
 
 import Board from "../../components/game/board/board";
-import { BoardModel } from "../../models/board";
+import { BoardModel, Status } from "../../models/board";
 import Stats from "../../components/stats/stats";
 import Gameover from "../../components/gameover/gameover";
 
@@ -20,77 +21,72 @@ export interface IMinesweeperState {
   state: "PROGRESS" | "WIN" | "LOST";
 }
 
-class Minesweeper extends React.Component<
-  IMinesweeperProps,
-  IMinesweeperState
-> {
-  readonly state: IMinesweeperState;
+export default function Minesweeper() {
+  const [board, setBoard] = useState<BoardModel>();
+  const history = useHistory();
+  const { search } = useLocation();
+  const queryParams = useMemo(() => qs.parse(search), [search]);
 
-  constructor(CommitsProps: IMinesweeperProps) {
-    super(CommitsProps);
+  useEffect(() => {
+    const size = queryParams.size as string || "10";
+    const bombs = queryParams.bombs as string || "10";
 
-    if (this.props.location.state) {
-      console.log(this.props.location.state);
-    }
-    const board = new BoardModel(10, 10);
+    const board = new BoardModel(parseInt(size), parseInt(bombs));
     board.generate();
 
-    this.state = { board: board, state: "PROGRESS" };
+    setBoard(board);
+  }, [setBoard, queryParams]);
 
-    this.onClickHandler = this.onClickHandler.bind(this);
-    this.onRightClickHandler = this.onRightClickHandler.bind(this);
-    this.restart = this.restart.bind(this);
-  }
+  function onClickHandler(id: string) {
+    if (!board) return;
+    const boardCopy = Object.assign(Object.create(Object.getPrototypeOf(board)), board)
 
-  onClickHandler(id: string) {
     const positions = id.split(":");
     const x = Number(positions[0]);
     const y = Number(positions[1]);
 
-    this.state.board.open(x, y);
-    this.setState({ board: this.state.board });
-
-    this.checkGameState();
+    boardCopy.open(x, y);
+    setBoard(boardCopy)
   }
 
-  onRightClickHandler(event: any) {
+  function onRightClickHandler(event: any) {
     event.preventDefault();
+    if (!board) return;
+    const boardCopy = Object.assign(Object.create(Object.getPrototypeOf(board)), board)
 
     const positions = event.target.id.split(":");
 
     const x = Number(positions[0]);
     const y = Number(positions[1]);
 
-    this.state.board.flag(x, y);
-    this.setState({ board: this.state.board });
+    boardCopy.flag(x, y);
+    setBoard(boardCopy);
   }
 
-  checkGameState() {
-    this.setState({ state: this.state.board.status });
+  function restart() {
+    if (!board) return;
+    const boardCopy = Object.assign(Object.create(Object.getPrototypeOf(board)), board)
+
+    boardCopy.generate();
+    setBoard(boardCopy);
   }
 
-  restart() {
-    this.state.board.generate();
-    this.setState({ board: this.state.board, state: "PROGRESS" });
+  if (!board) {
+    return <div>Loading</div>
   }
 
-  componentDidMount() {}
-
-  render() {
-    return (
-      <div className="minesweeper">
-        <Stats status={this.state.state} flags={this.state.board.flags}></Stats>
-        <button onClick={this.restart}>Restart</button>
-        <Board
-          board={this.state.board}
-          blocked={this.state.board.status === "LOST"}
-          onClickHandler={this.onClickHandler}
-          onRightClickHandler={this.onRightClickHandler}
-        ></Board>
-        <Gameover show={this.state.state === "LOST"}></Gameover>
-      </div>
-    );
-  }
+  return (
+    <div className="minesweeper">
+      <Stats status={board.status} flags={board.flags}></Stats>
+      <button onClick={restart}>Restart</button>
+      <button onClick={() => history.goBack()}>Menu</button>
+      <Board
+        board={board}
+        blocked={board.status === Status.LOST}
+        onClickHandler={onClickHandler}
+        onRightClickHandler={onRightClickHandler}
+      ></Board>
+      <Gameover show={board.status === Status.LOST}></Gameover>
+    </div>
+  );
 }
-
-export default Minesweeper;
