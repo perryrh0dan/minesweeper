@@ -8,6 +8,7 @@ import Board from "../../components/game/board/board";
 import { BoardModel, Status } from "../../models/board";
 import Stats from "../../components/stats/stats";
 import Gameover from "../../components/gameover/gameover";
+import Win from "../../components/win/win";
 
 export interface MinesweeperLocationState {
   bombs: number;
@@ -18,7 +19,6 @@ export interface IMinesweeperProps extends RouteComponentProps {}
 
 export interface IMinesweeperState {
   board: BoardModel;
-  state: "PROGRESS" | "WIN" | "LOST";
 }
 
 export default function Minesweeper() {
@@ -39,12 +39,14 @@ export default function Minesweeper() {
 
   function onClickHandler(id: string) {
     if (!board) return;
-    const boardCopy = Object.assign(Object.create(Object.getPrototypeOf(board)), board)
+    console.log(board.counter)
+    const boardCopy: BoardModel = Object.assign(Object.create(Object.getPrototypeOf(board)), board)
 
     const positions = id.split(":");
     const x = Number(positions[0]);
     const y = Number(positions[1]);
 
+    console.log(boardCopy.counter)
     boardCopy.open(x, y);
     setBoard(boardCopy)
   }
@@ -87,6 +89,7 @@ export default function Minesweeper() {
         onRightClickHandler={onRightClickHandler}
       ></Board>
       <Gameover show={board.status === Status.LOST}></Gameover>
+      <Win show={board.status === Status.WIN}></Win>
     </div>
   );
 }

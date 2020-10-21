@@ -3,10 +3,10 @@ import { BombTileModel } from "./bombTile";
 import { ValueTileModel } from "./valueTile";
 
 export enum Status {
+  INITIAL,
   PROGRESS,
   WIN,
   LOST,
-  Stop,
 }
 
 export class BoardModel {
@@ -14,15 +14,14 @@ export class BoardModel {
   public readonly bombs: number;
   public status: Status;
   public tiles: Array<Array<TileModel>>;
-
-  // count up for every tile that get opened
-  public counter: number = 0;
+  public counter: number;
 
   constructor(size: number, bombs: number) {
     this.size = size;
     this.bombs = bombs;
-    this.status = Status.Stop;
+    this.status = Status.INITIAL;
     this.tiles = Array<Array<TileModel>>();
+    this.counter = 0
   }
 
   public get flags() {
@@ -59,7 +58,9 @@ export class BoardModel {
       }
     }
 
-    this.status = Status.PROGRESS;
+    // Reset status and counter
+    this.status = Status.INITIAL;
+    this.counter = 0;
   }
 
   public open(x: number, y: number) {
@@ -70,6 +71,7 @@ export class BoardModel {
     if (tile.state === "OPEN") return;
 
     tile.open();
+    console.log(this.counter)
     this.counter += 1
 
     // Check is game is lost
