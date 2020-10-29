@@ -1,0 +1,14 @@
+.stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .item {
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid gray;
+    border-radius: 10px;
+    height: 40px;
+    width: 80px;
+  }
+}

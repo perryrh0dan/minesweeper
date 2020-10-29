@@ -15,6 +15,7 @@ export class BoardModel {
   public status: Status;
   public tiles: Array<Array<TileModel>>;
   public counter: number;
+  public startTime: Date;
 
   constructor(size: number, bombs: number) {
     this.size = size;
@@ -22,6 +23,7 @@ export class BoardModel {
     this.status = Status.INITIAL;
     this.tiles = Array<Array<TileModel>>();
     this.counter = 0
+    this.startTime = new Date()
   }
 
   public get flags() {
@@ -59,11 +61,17 @@ export class BoardModel {
     }
 
     // Reset status and counter
-    this.status = Status.INITIAL;
-    this.counter = 0;
+    this.reset()
   }
 
   public open(x: number, y: number) {
+    if (isNaN(x) || isNaN(y)) return;
+
+    if (this.counter === 0) {
+      this.status = Status.PROGRESS;
+      this.startTime = new Date();
+    }
+
     let tile = this.tiles[y][x];
     if (tile.flagged === true) return;
 
@@ -71,7 +79,6 @@ export class BoardModel {
     if (tile.state === "OPEN") return;
 
     tile.open();
-    console.log(this.counter)
     this.counter += 1
 
     // Check is game is lost
@@ -93,6 +100,11 @@ export class BoardModel {
   public flag(x: number, y: number) {
     if (isNaN(x) || isNaN(y)) return;
 
+    if (this.counter === 0) {
+      this.status = Status.PROGRESS;
+      this.startTime = new Date();
+    }
+
     if (this.tiles[y][x].state === "CLOSE") {
       this.tiles[y][x].flagged = !this.tiles[y][x].flagged;
     }
@@ -104,6 +116,12 @@ export class BoardModel {
         this.open(column, row)
       }
     }
+  }
+
+  private reset() {
+    this.counter = 0;
+    this.startTime = new Date();
+    this.status = Status.INITIAL;
   }
 
   private openNeightbours(x: number, y: number) {

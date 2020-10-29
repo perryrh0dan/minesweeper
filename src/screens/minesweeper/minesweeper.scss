@@ -1,10 +1,19 @@
 .minesweeper {
-  display: flex;
+  height: 100%;
+  display: grid;
   flex-flow: column;
+  grid-template-rows: 25% 50% 25%;
 
-  button {
-    margin-top: 10px;
-    margin-bottom: 10px;
+  .header {
+    margin-top: auto;
+    margin-bottom: auto;
+    display: flex;
+    flex-flow: column;
+
+    button {
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
   }
 
   table {

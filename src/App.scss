@@ -1,8 +1,28 @@
 .App {
   text-align: center;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100vw;
+  // justify-content: center;
+  // align-items: center;
+  min-height: 100vh;
+  // width: 100vw;
+
+  .content {
+    display: flex;
+    padding: 10px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  input {
+    border-radius: 20px;
+    padding: 8px;
+    border: 1px solid gray;
+  }
+
+  button {
+    border: 1px solid gray;
+    border-radius: 20px;
+    padding: 8px;
+    cursor: pointer;
+  }
 }

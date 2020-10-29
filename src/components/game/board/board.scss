@@ -1,3 +1,12 @@
 .board {
+  height: fit-content;
+  position: relative;
 
+  .blur {
+    z-index: 1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255,255,255,0.8);
+  }
 }
