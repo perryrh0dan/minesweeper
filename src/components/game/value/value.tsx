@@ -36,7 +36,7 @@ class Value extends React.Component<ValueProps, ValueState> {
       case 5:
         return "five"
       default:
-        return ""
+        return "none"
     }
   }
 }

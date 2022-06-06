@@ -2,7 +2,7 @@
   height: 100%;
   display: grid;
   flex-flow: column;
-  grid-template-rows: 25% 50% 25%;
+  grid-template-rows: minmax(150px, 25%) 50% 25%;
 
   .header {
     margin-top: auto;

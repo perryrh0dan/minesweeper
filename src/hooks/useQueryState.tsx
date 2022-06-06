@@ -1,13 +1,13 @@
 import qs from 'query-string';
 import { useEffect, useMemo, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function useQueryState<S>(
   paramName: string,
   serialize?: ((val: S) => string),
   initialState?: S | (() => S),
 ): [S, React.Dispatch<React.SetStateAction<S>>] {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { pathname, search } = useLocation();
   const queryParams = useMemo(() => qs.parse(search), [search]);
 
@@ -36,9 +36,9 @@ export default function useQueryState<S>(
         query: updatedQueryParams,
       });
 
-      history.replace(newURL);
+      navigate(newURL, { replace: true });
     }
-  }, [stateValue, history, paramName, pathname, queryParams, serialize])
+  }, [stateValue, navigate, paramName, pathname, queryParams, serialize])
 
   return [stateValue, setState];
 };

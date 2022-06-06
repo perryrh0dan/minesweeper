@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import qs from 'query-string';
 
 import "./minesweeper.scss";
@@ -17,7 +17,7 @@ export interface MinesweeperLocationState {
 export default function Minesweeper() {
   const [ board, setBoard, refBoard ] = useStateRef();
   // const [board, setBoard] = useState<BoardModel>();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { search } = useLocation();
   const queryParams = useMemo(() => qs.parse(search), [search]);
 
@@ -73,7 +73,7 @@ export default function Minesweeper() {
       <div className="header">
         <Stats status={board.status} flags={board.flags} timer={board.status}></Stats>
         <button onClick={restart}>Restart</button>
-        <button onClick={() => history.goBack()}>Menu</button>
+        <button onClick={() => navigate("/")}>Menu</button>
       </div>
       <Board
         board={board}

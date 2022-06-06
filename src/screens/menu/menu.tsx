@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import "./menu.scss";
 
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useInput } from "../../hooks/useInput";
 import useQueryState from "../../hooks/useQueryState";
 
@@ -33,7 +33,7 @@ function bombsValidation(fieldValue: any) {
 };
 
 export default function Menu() {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [size, setSize] = useQueryState<string|null>('size');
   const [bombs, setBombs] = useQueryState<string|null>('bombs');
@@ -61,7 +61,7 @@ export default function Menu() {
       return;
     }
 
-    history.push(`/game?size=${size}&bombs=${bombs}`);
+    navigate(`/game?size=${size}&bombs=${bombs}`);
   }
 
   return (
